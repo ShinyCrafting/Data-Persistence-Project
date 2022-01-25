@@ -22,7 +22,7 @@ public class MenuUIHandler : MonoBehaviour
             SetPlayerName();
         }
 
-            SetHighScoreText();
+        SetHighScoreText();
         
     }
 
@@ -46,6 +46,7 @@ public class MenuUIHandler : MonoBehaviour
         {
             currentHighScore.text = "";
         }
+        GameManager.Instance.SaveHighScore();
     }
 
     public void StartNew()
@@ -63,6 +64,7 @@ public class MenuUIHandler : MonoBehaviour
 
     public void Exit()
     {
+        GameManager.Instance.SaveHighScore();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
