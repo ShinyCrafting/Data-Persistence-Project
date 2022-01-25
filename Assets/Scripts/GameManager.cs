@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 
     public static string playerName;
     public static bool isGamePaused;
+    public static int highScorePoints;
+    public static string highScoreName;
 
     private void Awake()
     {

@@ -9,6 +9,7 @@ using UnityEditor;
 public class MenuUIHandler : MonoBehaviour
 {
     public TMP_InputField playerNamePrompt;
+    public TextMeshProUGUI currentHighScore; 
     public Button startButton;
 
     private void Start()
@@ -18,6 +19,10 @@ public class MenuUIHandler : MonoBehaviour
         if (GameManager.playerName != null)
         {
             playerNamePrompt.text = GameManager.playerName;
+        }
+        if (GameManager.highScorePoints > 0)
+        {
+            currentHighScore.text = "High Score: Player:" + GameManager.highScoreName + " Score: " + GameManager.highScorePoints;
         }
     }
 

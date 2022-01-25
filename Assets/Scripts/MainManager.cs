@@ -10,7 +10,8 @@ public class MainManager : MonoBehaviour
 
     private MainUIHandler mainUIHandler;
 
-    public Text ScoreText;
+    public Text scoreText;
+    public Text highScoreText;
     public GameObject GameOverText;
 
     private bool m_Started = false;
@@ -24,31 +25,19 @@ public class MainManager : MonoBehaviour
     void Start()
     {
         mainUIHandler = GameObject.Find("Canvas").GetComponent<MainUIHandler>();
-        const float step = 0.6f;
-        int perLine = Mathf.FloorToInt(4.0f / step);
+        
 
         if (GameManager.Instance != null)
         {
-            currentScoreText = "Name: " + GameManager.playerName + " Score: ";
-            ScoreText.text = currentScoreText + m_Points;
+            UpdateCurrentScore();
         }
 
-        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
-        for (int i = 0; i < LineCount; ++i)
-        {
-            for (int x = 0; x < perLine; ++x)
-            {
-                Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
-                var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
-                brick.PointValue = pointCountArray[i];
-                brick.onDestroyed.AddListener(AddPoint);
-            }
-        }
+        CreateBricks();
     }
 
     private void Update()
     {
-        if (!m_Started && !GameManager.isGamePaused)
+        if (!m_Started && !GameManager.isGamePaused )
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -68,21 +57,61 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!m_GameOver && Input.GetKeyDown(KeyCode.Escape))
         {
             mainUIHandler.PauseGame();
+        }
+    }
+
+    private void CreateBricks()
+    {
+        const float step = 0.6f;
+        int perLine = Mathf.FloorToInt(4.0f / step);
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
+        for (int i = 0; i < LineCount; ++i)
+        {
+            for (int x = 0; x < perLine; ++x)
+            {
+                Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
+                var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
+                brick.PointValue = pointCountArray[i];
+                brick.onDestroyed.AddListener(AddPoint);
+            }
         }
     }
 
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = currentScoreText + m_Points;
+        scoreText.text = currentScoreText + m_Points;
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        if (m_Points > GameManager.highScorePoints)
+        {
+            UpdateHighScore();
+        }
+    }
+
+    public void UpdateHighScore()
+    {
+        GameManager.highScorePoints = m_Points;
+        GameManager.highScoreName = GameManager.playerName;
+        UpdateHighScoreText();
+    }
+
+    public void UpdateCurrentScore()
+    {
+        currentScoreText = "Name: " + GameManager.playerName + " Score: ";
+        scoreText.text = currentScoreText + m_Points;
+        UpdateHighScoreText();
+    }
+
+    public void UpdateHighScoreText()
+    {
+        highScoreText.text = "High Score: Player: " + GameManager.highScoreName + " Score: " + GameManager.highScorePoints;
     }
 }
