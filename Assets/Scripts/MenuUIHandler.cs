@@ -40,7 +40,7 @@ public class MenuUIHandler : MonoBehaviour
     {
         if (GameManager.highScorePoints > 0)
         {
-            currentHighScore.text = "High Score: Player: " + GameManager.highScoreName + " Score: " + GameManager.highScorePoints;
+            currentHighScore.text = "High Score Player: " + GameManager.highScoreName + ", Score: " + GameManager.highScorePoints;
         }
         else
         {

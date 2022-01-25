@@ -13,9 +13,11 @@ public class MainManager : MonoBehaviour
     public Text scoreText;
     public Text highScoreText;
     public GameObject GameOverText;
+    
 
     private bool m_Started = false;
     private int m_Points;
+    private static int holdPoints;
     private string currentScoreText = "Name: ";
 
     private bool m_GameOver = false;
@@ -26,6 +28,11 @@ public class MainManager : MonoBehaviour
     {
         mainUIHandler = GameObject.Find("Canvas").GetComponent<MainUIHandler>();
         
+        if (holdPoints != 0)
+        {
+            m_Points = holdPoints;
+            holdPoints = 0;
+        }
 
         if (GameManager.Instance != null)
         {
@@ -57,9 +64,17 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
-        if (!m_GameOver && Input.GetKeyDown(KeyCode.Escape))
+        if (!m_GameOver)
         {
-            mainUIHandler.PauseGame();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                mainUIHandler.PauseGame();
+            }
+            if (GameManager.brickCount == 0)
+            {
+                holdPoints = m_Points;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
     }
 
@@ -78,6 +93,7 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+        GameManager.brickCount = 36;
     }
 
     void AddPoint(int point)
@@ -112,6 +128,6 @@ public class MainManager : MonoBehaviour
 
     public void UpdateHighScoreText()
     {
-        highScoreText.text = "High Score: Player: " + GameManager.highScoreName + " Score: " + GameManager.highScorePoints;
+        highScoreText.text = "High Score Player: " + GameManager.highScoreName + ", Score: " + GameManager.highScorePoints;
     }
 }

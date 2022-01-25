@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static bool isGamePaused;
     public static int highScorePoints;
     public static string highScoreName;
+    public static int brickCount;
 
     private void Awake()
     {
