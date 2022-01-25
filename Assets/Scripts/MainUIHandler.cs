@@ -1,21 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 public class MainUIHandler : MonoBehaviour
 {
-    private GameObject PauseUI;
+    private GameObject pauseUI;
     private float pauseTime = 0.0f;
     private float defaultTime = 1.0f;
 
     private void Start()
     {
-        PauseUI = GameObject.Find("Pause UI");
-        PauseUI.SetActive(GameManager.isGamePaused);
+        pauseUI = GameObject.Find("Pause UI");
+        pauseUI.SetActive(GameManager.isGamePaused);
     }
     public void ToMainMenu()
     {
@@ -40,6 +37,6 @@ public class MainUIHandler : MonoBehaviour
         {
             Time.timeScale = defaultTime;
         }
-        PauseUI.SetActive(GameManager.isGamePaused);
+        pauseUI.SetActive(GameManager.isGamePaused);
     }
 }
