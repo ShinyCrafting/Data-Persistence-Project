@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainUIHandler : MonoBehaviour
 {
     private GameObject pauseUI;
+
     private float pauseTime = 0.0f;
     private float defaultTime = 1.0f;
 

@@ -16,14 +16,14 @@ public class MenuUIHandler : MonoBehaviour
     {
         playerNamePrompt = GameObject.Find("Player Name Prompt").GetComponent<TMP_InputField>();
         startButton = GameObject.Find("Start Button").GetComponent<Button>();
+
         if (GameManager.playerName != null)
         {
-            playerNamePrompt.text = GameManager.playerName;
+            SetPlayerName();
         }
-        if (GameManager.highScorePoints > 0)
-        {
-            currentHighScore.text = "High Score: Player:" + GameManager.highScoreName + " Score: " + GameManager.highScorePoints;
-        }
+
+            SetHighScoreText();
+        
     }
 
     private void Update()
@@ -31,11 +31,34 @@ public class MenuUIHandler : MonoBehaviour
         startButton.interactable = !playerNamePrompt.placeholder.enabled;
     }
 
+    private void SetPlayerName()
+    {
+        playerNamePrompt.text = GameManager.playerName;
+    }
+
+    private void SetHighScoreText()
+    {
+        if (GameManager.highScorePoints > 0)
+        {
+            currentHighScore.text = "High Score: Player: " + GameManager.highScoreName + " Score: " + GameManager.highScorePoints;
+        }
+        else
+        {
+            currentHighScore.text = "";
+        }
+    }
 
     public void StartNew()
     {
         GameManager.playerName = playerNamePrompt.text;
         SceneManager.LoadScene(1);
+    }
+
+    public void ResetHighScores()
+    {
+        GameManager.highScorePoints = 0;
+        GameManager.highScoreName = "";
+        SetHighScoreText();
     }
 
     public void Exit()
